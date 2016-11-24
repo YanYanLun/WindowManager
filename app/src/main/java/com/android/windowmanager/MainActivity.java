@@ -32,8 +32,9 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.bt_activity).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                WindowMnagerUtil.getWindowInstance(MainActivity.this).createWindow(); //会消失
+//                WindowMnagerUtil.getWindowInstance(MainActivity.this).createWindow(); //会消失
 //                WindowMnagerUtil.getWindowInstance(getApplicationContext()).createWindow(); //不会消失
+                WindowMnagerNoinstanceUtil.createWindow(MainActivity.this);
             }
         });
 

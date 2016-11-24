@@ -22,7 +22,11 @@
         <service
             android:name=".WindowService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true" />
+
+<!--
+        <activity android:name=".ViewActivity"></activity>
+-->
     </application>
 
 </manifest>
