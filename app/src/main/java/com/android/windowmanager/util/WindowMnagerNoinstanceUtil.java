@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.android.windowmanager.R;
@@ -32,50 +33,51 @@ public class WindowMnagerNoinstanceUtil {
         } else {
             windowManagerParams.type = WindowManager.LayoutParams.TYPE_TOAST;
         }
-        windowManagerParams.format = PixelFormat.RGBA_8888; // 设置图片格式，效果为背景透明
+//        windowManagerParams.format = PixelFormat.RGBA_4444; // 设置图片格式，效果为背景透明
         // 设置Window flag
         windowManagerParams.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
+
         /*
          * 注意，flag的值可以为： LayoutParams.FLAG_NOT_TOUCH_MODAL 不影响后面的事件
 		 * LayoutParams.FLAG_NOT_FOCUSABLE 不可聚焦 LayoutParams.FLAG_NOT_TOUCHABLE
 		 * 不可触摸
 		 */
-        // 调整悬浮窗口至左上角，便于调整坐标
-//        windowManagerParams.gravity = Gravity.LEFT | Gravity.TOP;
-////        // 以屏幕左上角为原点，设置x、y初始值
-//        windowManagerParams.x = 0;
-//        windowManagerParams.y = 0;
+
         // 设置悬浮窗口长宽数据
         windowManagerParams.width = WindowManager.LayoutParams.MATCH_PARENT;
         windowManagerParams.height = WindowManager.LayoutParams.MATCH_PARENT;
-//        windowManagerParams.gravity = Gravity.CENTER;
 
 
-        //设置布局
-//        final FrameLayout fl = new FrameLayout(context);
-//        fl.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-//        fl.setBackgroundResource(android.R.color.transparent);
-//        fl.getBackground().setAlpha(100);
+        //设置最外层FrameLayout布局
+        final FrameLayout fl = new FrameLayout(context);
+        FrameLayout.LayoutParams flParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        fl.setLayoutParams(flParams);
+        fl.setBackgroundColor(Color.BLACK);
 
-        final RelativeLayout rl = new RelativeLayout(context);
-        RelativeLayout.LayoutParams rlp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        rl.getBackground().setAlpha(200);
+
+        //设置 RelativeLayout布局
+        RelativeLayout rl = new RelativeLayout(context);
+
+        FrameLayout.LayoutParams rlp = new FrameLayout.LayoutParams(500, 500);
+        rlp.gravity = Gravity.CENTER;       //这两行设置剧中显示 ， 使用FrameLayout  属性中 android:layout_gravity  设置居中
+
+        rl.setBackgroundColor(Color.BLUE);
         rl.setLayoutParams(rlp);
+        //设置图片
         ImageView imageView = new ImageView(context);    //设置添加的图片
         RelativeLayout.LayoutParams ivParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        ivParams.addRule(RelativeLayout.CENTER_IN_PARENT);
         rl.addView(imageView, ivParams);
         imageView.setImageResource(R.mipmap.girl);
 
-//        fl.addView(rl, rlp);
+        fl.addView(rl, rlp);
 
-        mWindowMnager.addView(rl, windowManagerParams);
+        mWindowMnager.addView(fl, windowManagerParams);
 
 
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mWindowMnager.removeViewImmediate(rl);
+                mWindowMnager.removeViewImmediate(fl);
             }
         });
     }
